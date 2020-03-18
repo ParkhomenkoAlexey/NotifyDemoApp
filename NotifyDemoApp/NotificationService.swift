@@ -28,54 +28,37 @@ class NotificationService: NSObject {
         }
     }
     
-    func configureNotification() {
+    func scheduleNotification(notificationType: String) {
         
-    }
-    
-    func scheduleNotification(notifaicationType: String) {
+        let firstNotification = "First Notification"
+        let remindShortAction = UNNotificationAction(identifier: "Remind5", title: "Напомни мне через 5 мин", options: [])
+        let remindLongAction = UNNotificationAction(identifier: "Remind15", title: "Напомни мне через 15 мин", options: [])
+        let readyAction = UNNotificationAction(identifier: "Ready", title: "Вперед!", options: [])
+        let firstNotificationCategory = UNNotificationCategory(identifier: firstNotification,
+                                              actions: [readyAction, remindShortAction, remindLongAction],
+                                              intentIdentifiers: [],
+                                              options: [])
+        notificationCenter.setNotificationCategories([firstNotificationCategory])
         
         let content = UNMutableNotificationContent()
-        let userAction = "User Action"
-        
-        content.title = notifaicationType
-        content.body = "This is example how to create " + notifaicationType
+        content.title = notificationType
+        content.body = "This is example how to create " + notificationType
         content.sound = UNNotificationSound.default
-        content.categoryIdentifier = userAction
-        
-//        guard let path = Bundle.main.path(forResource: "banking", ofType: "png") else { return }
-//        let url = URL(fileURLWithPath: path)
-//
-//        do {
-//            let attachment = try UNNotificationAttachment(identifier: "banking", url: url, options: nil)
-//            content.attachments = [attachment]
-//        } catch {
-//            print("The attachment could not be loaded")
-//        }
+        content.categoryIdentifier = firstNotification
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
-        let identifire = notifaicationType
-        let request = UNNotificationRequest(identifier: identifire,
+        let identifier = notificationType
+        let request = UNNotificationRequest(identifier: identifier,
                                             content: content,
                                             trigger: trigger)
         
         notificationCenter.add(request) { (error) in
-            print("kek")
             if let error = error {
                 print("Error \(error.localizedDescription)")
             }
         }
-        
-        let snoozeAction = UNNotificationAction(identifier: "Snooze", title: "Snooze", options: [])
-        let deleteAction = UNNotificationAction(identifier: "Delete", title: "Delete", options: [.destructive])
-        let category = UNNotificationCategory(identifier: userAction,
-                                              actions: [snoozeAction, deleteAction],
-                                              intentIdentifiers: [],
-                                              options: [])
-        notificationCenter.setNotificationCategories([category])
-        
     }
-    
 }
 
 // MARK: - UNUserNotificationCenterDelegate
@@ -97,11 +80,13 @@ extension NotificationService: UNUserNotificationCenterDelegate {
             print("Dismiss Action")
         case UNNotificationDefaultActionIdentifier:
             print("Default Action")
-        case "Snooze":
-            print("Snooze Action")
-            scheduleNotification(notifaicationType: "Second Notification")
-        case "Delete":
-            print("Delete Action")
+        case "Ready":
+            print("Ready Action")
+        case "Remind5":
+            print("Remind5 Action")
+            scheduleNotification(notificationType: "Second Notification")
+        case "Remind15":
+            print("Remind15 Action")
         default:
             print("Unknown Action")
         }

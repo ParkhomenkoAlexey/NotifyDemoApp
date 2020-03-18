@@ -12,7 +12,7 @@ class TableViewController: UITableViewController {
     
     let notificationService = NotificationService()
     
-    let notificationsType = ["Local Notification",
+    let notificationsType = ["First Notification",
                          "Second Notification",
                          "Laudatory Notification",
                          "Three Refuse Notification",
@@ -51,7 +51,7 @@ class TableViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-            self.notificationService.scheduleNotification(notifaicationType: notificationType)
+            self.notificationService.scheduleNotification(notificationType: notificationType)
         }
         
         alert.addAction(okAction)
