@@ -11,11 +11,17 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    let notifications = NotificationService()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        notifications.requestAutorization()
+        notifications.notificationCenter.delegate = notifications
         return true
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     // MARK: UISceneSession Lifecycle
